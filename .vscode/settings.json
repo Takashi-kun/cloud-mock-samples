@@ -1,0 +1,9 @@
+{
+  "gopls": {
+    "experimentalWorkspaceModule": true
+},
+"cSpell.words": [
+        "iampb",
+        "secretmanagerpb"
+]
+}
