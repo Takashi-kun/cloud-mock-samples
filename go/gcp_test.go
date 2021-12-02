@@ -10,15 +10,14 @@ import (
 	"google.golang.org/api/option"
 	"google.golang.org/api/option/internaloption"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
-	v1 "google.golang.org/genproto/googleapis/iam/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type (
 	testInternalSMServer struct {
+		*secretmanagerpb.UnimplementedSecretManagerServiceServer
 		api    *secretManagerAPI
 		server *grpc.Server
 	}
@@ -26,49 +25,7 @@ type (
 
 var _ secretmanagerpb.SecretManagerServiceServer = (*testInternalSMServer)(nil)
 
-func (s *testInternalSMServer) ListSecrets(context.Context, *secretmanagerpb.ListSecretsRequest) (*secretmanagerpb.ListSecretsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
 func (s *testInternalSMServer) CreateSecret(context.Context, *secretmanagerpb.CreateSecretRequest) (*secretmanagerpb.Secret, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) AddSecretVersion(context.Context, *secretmanagerpb.AddSecretVersionRequest) (*secretmanagerpb.SecretVersion, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) GetSecret(context.Context, *secretmanagerpb.GetSecretRequest) (*secretmanagerpb.Secret, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) UpdateSecret(context.Context, *secretmanagerpb.UpdateSecretRequest) (*secretmanagerpb.Secret, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) DeleteSecret(context.Context, *secretmanagerpb.DeleteSecretRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) ListSecretVersions(context.Context, *secretmanagerpb.ListSecretVersionsRequest) (*secretmanagerpb.ListSecretVersionsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) GetSecretVersion(context.Context, *secretmanagerpb.GetSecretVersionRequest) (*secretmanagerpb.SecretVersion, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) AccessSecretVersion(context.Context, *secretmanagerpb.AccessSecretVersionRequest) (*secretmanagerpb.AccessSecretVersionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) DisableSecretVersion(context.Context, *secretmanagerpb.DisableSecretVersionRequest) (*secretmanagerpb.SecretVersion, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) EnableSecretVersion(context.Context, *secretmanagerpb.EnableSecretVersionRequest) (*secretmanagerpb.SecretVersion, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) DestroySecretVersion(context.Context, *secretmanagerpb.DestroySecretVersionRequest) (*secretmanagerpb.SecretVersion, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) SetIamPolicy(context.Context, *v1.SetIamPolicyRequest) (*v1.Policy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) GetIamPolicy(context.Context, *v1.GetIamPolicyRequest) (*v1.Policy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
-}
-func (s *testInternalSMServer) TestIamPermissions(context.Context, *v1.TestIamPermissionsRequest) (*v1.TestIamPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
 }
 
