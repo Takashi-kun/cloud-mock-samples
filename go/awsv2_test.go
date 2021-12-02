@@ -35,7 +35,7 @@ func (m *mockDescribeFileSystemsV2Pager) NextPage(ctx context.Context, opts ...f
 	return output, nil
 }
 
-func Test_describeInstances(t *testing.T) {
+func Test_describeFileSystemsV2(t *testing.T) {
 	pager := &mockDescribeFileSystemsV2Pager{
 		Pages: []*efs.DescribeFileSystemsOutput{
 			{
@@ -55,7 +55,7 @@ func Test_describeInstances(t *testing.T) {
 			},
 		},
 	}
-	err := describeFileSystems(context.TODO(), pager)
+	err := describeFileSystemsV2(context.TODO(), pager)
 	if err != nil {
 		t.Fatalf("expect no error, got %v", err) // comes here
 	}

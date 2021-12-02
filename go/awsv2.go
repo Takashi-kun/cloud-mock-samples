@@ -11,7 +11,7 @@ type describeFileSystemsV2Pager interface {
 	NextPage(context.Context, ...func(*efs.Options)) (*efs.DescribeFileSystemsOutput, error)
 }
 
-func describeFileSystems(ctx context.Context, pager describeFileSystemsV2Pager) error {
+func describeFileSystemsV2(ctx context.Context, pager describeFileSystemsV2Pager) error {
 	var err error
 	for pager.HasMorePages() {
 		_, err = pager.NextPage(ctx)
