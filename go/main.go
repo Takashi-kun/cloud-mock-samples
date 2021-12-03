@@ -7,6 +7,7 @@ import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 
+	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
 	cfgV2 "github.com/aws/aws-sdk-go-v2/config"
 	credV2 "github.com/aws/aws-sdk-go-v2/credentials"
 	efsV2 "github.com/aws/aws-sdk-go-v2/service/efs"
@@ -60,4 +61,8 @@ func sampleGCPSecretManager() {
 	sm.createSecretManager(context.TODO(), &secretmanagerpb.CreateSecretRequest{
 		SecretId: "sample",
 	})
+}
+
+func sampleAzureVM() {
+	getAzureVM(compute.NewVirtualMachinesClient("SUBSCRIPTION_ID"))
 }
