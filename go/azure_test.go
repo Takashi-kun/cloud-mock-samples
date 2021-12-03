@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute/computeapi"
@@ -18,7 +17,7 @@ type (
 )
 
 func (m mockVMClient) List(ctx context.Context, resourceGroupName string) (result compute.VirtualMachineListResultPage, err error) {
-	return compute.VirtualMachineListResultPage{}, errors.New("not implemented yet")
+	return compute.VirtualMachineListResultPage{}, errMock
 }
 
 func Test_listAzureVM(t *testing.T) {

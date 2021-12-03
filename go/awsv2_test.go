@@ -5,24 +5,24 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/service/efs"
-	"github.com/aws/aws-sdk-go-v2/service/efs/types"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go/aws"
 )
 
 type (
-	mockDescribeFileSystemsV2Pager struct {
+	mockDescribeInstancesV2Pager struct {
 		PageNum int
-		Pages   []*efs.DescribeFileSystemsOutput
+		Pages   []*ec2.DescribeInstancesOutput
 	}
 )
 
-func (m *mockDescribeFileSystemsV2Pager) HasMorePages() bool {
+func (m *mockDescribeInstancesV2Pager) HasMorePages() bool {
 	return m.PageNum < len(m.Pages)
 }
 
-func (m *mockDescribeFileSystemsV2Pager) NextPage(ctx context.Context, opts ...func(*efs.Options)) (*efs.DescribeFileSystemsOutput, error) {
-	var output *efs.DescribeFileSystemsOutput
+func (m *mockDescribeInstancesV2Pager) NextPage(ctx context.Context, opts ...func(*ec2.Options)) (*ec2.DescribeInstancesOutput, error) {
+	var output *ec2.DescribeInstancesOutput
 	if m.PageNum >= len(m.Pages) {
 		return nil, errors.New("no more pages")
 	}
@@ -30,32 +30,49 @@ func (m *mockDescribeFileSystemsV2Pager) NextPage(ctx context.Context, opts ...f
 	m.PageNum++
 
 	if m.PageNum > 2 {
-		return nil, errors.New("dummy error")
+		return nil, errMock
 	}
 	return output, nil
 }
 
-func Test_describeFileSystemsV2(t *testing.T) {
-	pager := &mockDescribeFileSystemsV2Pager{
-		Pages: []*efs.DescribeFileSystemsOutput{
+func Test_describeInstancesV2(t *testing.T) {
+	pager := &mockDescribeInstancesV2Pager{
+		Pages: []*ec2.DescribeInstancesOutput{
 			{
-				FileSystems: []types.FileSystemDescription{
-					{Name: aws.String("foo")},
+				Reservations: []types.Reservation{
+					{
+						Instances: []types.Instance{
+							{InstanceId: aws.String("foo_1")},
+							{InstanceId: aws.String("bar_1")},
+						},
+					},
 				},
 			},
 			{
-				FileSystems: []types.FileSystemDescription{
-					{Name: aws.String("bar")},
+				Reservations: []types.Reservation{
+					{
+						Instances: []types.Instance{
+							{InstanceId: aws.String("foo_2")},
+							{InstanceId: aws.String("bar_2")},
+							{InstanceId: aws.String("baz_2")},
+						},
+					},
 				},
 			},
 			{
-				FileSystems: []types.FileSystemDescription{
-					{Name: aws.String("baz")},
+				Reservations: []types.Reservation{
+					{
+						Instances: []types.Instance{
+							{InstanceId: aws.String("foo_3")},
+							{InstanceId: aws.String("bar_3")},
+							{InstanceId: aws.String("baz_3")},
+						},
+					},
 				},
 			},
 		},
 	}
-	err := describeFileSystemsV2(context.TODO(), pager)
+	err := describeInstancesV2(context.TODO(), pager)
 	if err != nil {
 		t.Fatalf("expect no error, got %v", err) // comes here
 	}

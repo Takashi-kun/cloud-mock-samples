@@ -4,24 +4,26 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/efs"
-	"github.com/aws/aws-sdk-go/service/efs/efsiface"
+	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/aws/aws-sdk-go/service/ec2/ec2iface"
 )
 
-func describeFileSystems(ctx context.Context, svc efsiface.EFSAPI, req *efs.DescribeFileSystemsInput) error {
+func describeInstances(ctx context.Context, svc ec2iface.EC2API, req *ec2.DescribeInstancesInput) error {
 	for {
-		res, err := svc.DescribeFileSystemsWithContext(ctx, req)
+		res, err := svc.DescribeInstancesWithContext(ctx, req)
 		if err != nil {
 			return err
 		}
-		for _, fs := range res.FileSystems {
-			println(aws.StringValue(fs.Name))
+		for _, rs := range res.Reservations {
+			for _, instance := range rs.Instances {
+				println(aws.StringValue(instance.InstanceId))
+			}
 		}
-		if res.NextMarker == nil {
+		if res.NextToken == nil {
 			break
 		}
 
-		req = req.SetMarker(*res.NextMarker)
+		req = req.SetNextToken(aws.StringValue(res.NextToken))
 	}
 	return nil
 }

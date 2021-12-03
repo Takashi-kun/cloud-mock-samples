@@ -6,10 +6,11 @@ import (
 	"testing"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+
 	"golang.org/x/net/nettest"
 	"google.golang.org/api/option"
 	"google.golang.org/api/option/internaloption"
-	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -18,6 +19,7 @@ import (
 type (
 	testInternalSMServer struct {
 		*secretmanagerpb.UnimplementedSecretManagerServiceServer
+
 		api    *secretManagerAPI
 		server *grpc.Server
 	}
@@ -25,8 +27,8 @@ type (
 
 var _ secretmanagerpb.SecretManagerServiceServer = (*testInternalSMServer)(nil)
 
-func (s *testInternalSMServer) CreateSecret(context.Context, *secretmanagerpb.CreateSecretRequest) (*secretmanagerpb.Secret, error) {
-	return nil, status.Errorf(codes.Unimplemented, "not implemented yet")
+func (s *testInternalSMServer) ListSecrets(context.Context, *secretmanagerpb.ListSecretsRequest) (*secretmanagerpb.ListSecretsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, errMock.Error())
 }
 
 func (s *testInternalSMServer) shutdown() {
@@ -82,12 +84,11 @@ func testNewSecretManagerClient(t *testing.T) *testInternalSMServer {
 	return internal
 }
 
-func TestSecretManagerAPI_CreateSecretManager(t *testing.T) {
+func TestSecretManagerAPI_listSecretManagers(t *testing.T) {
 	internal := testNewSecretManagerClient(t)
 	defer internal.shutdown()
 
-	_, err := internal.api.createSecretManager(context.TODO(), &secretmanagerpb.CreateSecretRequest{})
-	if err != nil {
+	if err := internal.api.listSecretManagers(context.TODO(), &secretmanagerpb.ListSecretsRequest{}); err != nil {
 		t.Fatalf("expect no error, got %v", err) // comes here
 	}
 }

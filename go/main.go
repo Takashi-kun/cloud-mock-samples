@@ -2,26 +2,30 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
-	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
-
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
 	"github.com/Azure/go-autorest/autorest/to"
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 
 	cfgV2 "github.com/aws/aws-sdk-go-v2/config"
 	credV2 "github.com/aws/aws-sdk-go-v2/credentials"
-	efsV2 "github.com/aws/aws-sdk-go-v2/service/efs"
+	ec2V2 "github.com/aws/aws-sdk-go-v2/service/ec2"
 
 	awsV1 "github.com/aws/aws-sdk-go/aws"
 	credV1 "github.com/aws/aws-sdk-go/aws/credentials"
 	sessV1 "github.com/aws/aws-sdk-go/aws/session"
-	efsV1 "github.com/aws/aws-sdk-go/service/efs"
+	ec2v1 "github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func sampleEFSV1() {
+var (
+	errMock = errors.New("mock error")
+)
+
+func sampleEC2V1() {
 	sess, err := sessV1.NewSession(&awsV1.Config{
 		Credentials: credV1.NewStaticCredentials("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "TOKEN"),
 		Region:      awsV1.String("us-west-1"),
@@ -29,8 +33,8 @@ func sampleEFSV1() {
 	if err != nil {
 		log.Fatalf("failed to create session: %v", err)
 	}
-	describeFileSystems(context.TODO(), efsV1.New(sess), &efsV1.DescribeFileSystemsInput{
-		MaxItems: awsV1.Int64(100),
+	describeInstances(context.TODO(), ec2v1.New(sess), &ec2v1.DescribeInstancesInput{
+		MaxResults: awsV1.Int64(100),
 	})
 }
 
@@ -46,10 +50,10 @@ func sampleEFSV2() {
 		log.Fatalf("unable to load config, %v", err)
 	}
 
-	pager := efsV2.NewDescribeFileSystemsPaginator(efsV2.NewFromConfig(cfg), &efsV2.DescribeFileSystemsInput{
-		MaxItems: awsV1.Int32(100),
+	pager := ec2V2.NewDescribeInstancesPaginator(ec2V2.NewFromConfig(cfg), &ec2V2.DescribeInstancesInput{
+		MaxResults: awsV1.Int32(100),
 	})
-	describeFileSystemsV2(context.TODO(), pager)
+	describeInstancesV2(context.TODO(), pager)
 }
 
 func sampleGCPSecretManager() {
@@ -61,9 +65,9 @@ func sampleGCPSecretManager() {
 		project: "cloud-mock-samples",
 		client:  client,
 	}
-	sm.createSecretManager(context.TODO(), &secretmanagerpb.CreateSecretRequest{
-		SecretId: "sample",
-	})
+	if err := sm.listSecretManagers(context.TODO(), &secretmanagerpb.ListSecretsRequest{}); err != nil {
+		log.Fatalf("failed to list: %v", err)
+	}
 }
 
 func sampleAzureVM() {

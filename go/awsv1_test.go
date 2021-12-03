@@ -2,27 +2,27 @@ package main
 
 import (
 	"context"
-	"errors"
 	"testing"
 
-	"github.com/aws/aws-sdk-go/service/efs"
-	"github.com/aws/aws-sdk-go/service/efs/efsiface"
+	"github.com/aws/aws-sdk-go/aws/request"
+	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/aws/aws-sdk-go/service/ec2/ec2iface"
 )
 
 type (
-	mockEFSAPI struct {
-		*efs.EFS
+	mockEC2API struct {
+		*ec2.EC2
 	}
 )
 
-var _ efsiface.EFSAPI = (*mockEFSAPI)(nil)
+var _ ec2iface.EC2API = (*mockEC2API)(nil)
 
-func (m *mockEFSAPI) DescribeFileSystems(*efs.DescribeFileSystemsInput) (*efs.DescribeFileSystemsOutput, error) {
-	return nil, errors.New("not implemented yet")
+func (m *mockEC2API) DescribeInstancesWithContext(context.Context, *ec2.DescribeInstancesInput, ...request.Option) (*ec2.DescribeInstancesOutput, error) {
+	return nil, errMock
 }
 
-func Test_describeFileSystems(t *testing.T) {
-	err := describeFileSystems(context.TODO(), &mockEFSAPI{}, &efs.DescribeFileSystemsInput{})
+func Test_describeInstances(t *testing.T) {
+	err := describeInstances(context.TODO(), &mockEC2API{}, &ec2.DescribeInstancesInput{})
 	if err != nil {
 		t.Fatalf("expect no error, got %v", err) // comes here
 	}

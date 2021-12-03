@@ -8,7 +8,6 @@ require (
 	github.com/Azure/go-autorest/autorest/to v0.4.0
 	github.com/aws/aws-sdk-go v1.42.14
 	github.com/aws/aws-sdk-go-v2/credentials v1.6.4
-	github.com/aws/aws-sdk-go-v2/service/efs v1.10.1
 	golang.org/x/net v0.0.0-20211201190559-0a0e4e1bb54c
 	google.golang.org/api v0.57.0
 	google.golang.org/genproto v0.0.0-20210921142501-181ce0d877f6
@@ -41,6 +40,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.11.0
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.2 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.25.0
 	github.com/aws/smithy-go v1.9.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
