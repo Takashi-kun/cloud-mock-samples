@@ -21,7 +21,7 @@ func (m *mockEFSAPI) DescribeFileSystems(*efs.DescribeFileSystemsInput) (*efs.De
 }
 
 func Test_describeFileSystems(t *testing.T) {
-	err := describeFileSystems(&mockEFSAPI{})
+	err := describeFileSystems(&mockEFSAPI{}, &efs.DescribeFileSystemsInput{})
 	if err != nil {
 		t.Fatalf("expect no error, got %v", err) // comes here
 	}

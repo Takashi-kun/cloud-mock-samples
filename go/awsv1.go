@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/efs/efsiface"
 )
 
-func describeFileSystems(svc efsiface.EFSAPI) error {
-	req := &efs.DescribeFileSystemsInput{}
+func describeFileSystems(svc efsiface.EFSAPI, req *efs.DescribeFileSystemsInput) error {
 	for {
 		res, err := svc.DescribeFileSystems(req)
 		if err != nil {
