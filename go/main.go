@@ -2,12 +2,15 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
+	"github.com/Azure/go-autorest/autorest/to"
+
 	cfgV2 "github.com/aws/aws-sdk-go-v2/config"
 	credV2 "github.com/aws/aws-sdk-go-v2/credentials"
 	efsV2 "github.com/aws/aws-sdk-go-v2/service/efs"
@@ -64,5 +67,18 @@ func sampleGCPSecretManager() {
 }
 
 func sampleAzureVM() {
-	getAzureVM(compute.NewVirtualMachinesClient("SUBSCRIPTION_ID"))
+	pager, err := listAzureVM(compute.NewVirtualMachinesClient("SUBSCRIPTION_ID"))
+	if err != nil {
+		log.Fatalf("failed to list Azure VM: %v", err)
+	}
+
+	for pager.NotDone() {
+		for _, vm := range pager.Values() {
+			fmt.Println(to.String(vm.Name))
+		}
+
+		if err := pager.NextWithContext(context.TODO()); err != nil {
+			log.Fatalf("failed to get next: %v", err)
+		}
+	}
 }
