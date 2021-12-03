@@ -8,6 +8,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
 )
 
-func listAzureVM(client computeapi.VirtualMachinesClientAPI) (compute.VirtualMachineListResultPage, error) {
-	return client.List(context.TODO(), "resource-group")
+func listAzureVM(ctx context.Context, client computeapi.VirtualMachinesClientAPI) (compute.VirtualMachineListResultPage, error) {
+	return client.List(ctx, "resource-group")
 }

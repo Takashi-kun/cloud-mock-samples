@@ -1,14 +1,16 @@
 package main
 
 import (
+	"context"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/efs"
 	"github.com/aws/aws-sdk-go/service/efs/efsiface"
 )
 
-func describeFileSystems(svc efsiface.EFSAPI, req *efs.DescribeFileSystemsInput) error {
+func describeFileSystems(ctx context.Context, svc efsiface.EFSAPI, req *efs.DescribeFileSystemsInput) error {
 	for {
-		res, err := svc.DescribeFileSystems(req)
+		res, err := svc.DescribeFileSystemsWithContext(ctx, req)
 		if err != nil {
 			return err
 		}

@@ -22,7 +22,7 @@ func (m mockVMClient) List(ctx context.Context, resourceGroupName string) (resul
 }
 
 func Test_listAzureVM(t *testing.T) {
-	_, err := listAzureVM(new(mockVMClient))
+	_, err := listAzureVM(context.TODO(), new(mockVMClient))
 	if err != nil {
 		t.Fatalf("failed to getAzureVM: %v", err) // comes here
 	}

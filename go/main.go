@@ -29,7 +29,7 @@ func sampleEFSV1() {
 	if err != nil {
 		log.Fatalf("failed to create session: %v", err)
 	}
-	describeFileSystems(efsV1.New(sess), &efsV1.DescribeFileSystemsInput{
+	describeFileSystems(context.TODO(), efsV1.New(sess), &efsV1.DescribeFileSystemsInput{
 		MaxItems: awsV1.Int64(100),
 	})
 }
@@ -67,7 +67,7 @@ func sampleGCPSecretManager() {
 }
 
 func sampleAzureVM() {
-	pager, err := listAzureVM(compute.NewVirtualMachinesClient("SUBSCRIPTION_ID"))
+	pager, err := listAzureVM(context.TODO(), compute.NewVirtualMachinesClient("SUBSCRIPTION_ID"))
 	if err != nil {
 		log.Fatalf("failed to list Azure VM: %v", err)
 	}

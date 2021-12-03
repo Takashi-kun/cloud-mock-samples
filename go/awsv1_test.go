@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"testing"
 
@@ -21,7 +22,7 @@ func (m *mockEFSAPI) DescribeFileSystems(*efs.DescribeFileSystemsInput) (*efs.De
 }
 
 func Test_describeFileSystems(t *testing.T) {
-	err := describeFileSystems(&mockEFSAPI{}, &efs.DescribeFileSystemsInput{})
+	err := describeFileSystems(context.TODO(), &mockEFSAPI{}, &efs.DescribeFileSystemsInput{})
 	if err != nil {
 		t.Fatalf("expect no error, got %v", err) // comes here
 	}
